@@ -1,0 +1,11 @@
+{
+  "name": "rc-async-demo",
+  "version": "1.0.0",
+  "description": "Example of asycn await example",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Arup Sarkar",
+  "license": "ISC"
+}
