@@ -23,6 +23,7 @@ app.get('/users/:id', asyncMiddleware(async (req, res, next) => {
       if there is an error thrown in getUserFromDb, asyncMiddleware
       will pass it to next() and express will handle the error;
     */
+    //console.log("INFO : ", JSON.stringify(req))
     const user = await getUserFromDb({ id: req.params.id })
     res.json(user);
 }));
@@ -30,11 +31,12 @@ app.get('/users/:id', asyncMiddleware(async (req, res, next) => {
 
 
 var getUserFromDb = function(userId){
-  if(userId == 1){
+  console.log(userId)
+  if(userId.id == '1'){
     return "John Smith"
-  }else if(userId == 2){
+  }else if(userId.id == '2'){
     return "Jane Smith"
-  }else if(userId == 3){
+  }else if(userId.id == '3'){
     return "Mark Cecillio"
   }else{
     return "Julio Tally"
