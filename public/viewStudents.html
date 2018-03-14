@@ -1,0 +1,29 @@
+<div class="container">
+
+  <h2> View Students </h2>
+  Search:
+  <br/>
+    <input type="text" ng-model="name" />
+  <br/>
+  <ul>
+    <li ng-repeat="student in students | filter:name">{{student.name}} , {{student.city}}</li>
+  </ul>
+
+
+  <form novalidate>
+    <h2> Create a Student </h2>
+    Id:<br>
+    <input type="text" ng-model="Student.id"><br>
+    Name:<br>
+    <input type="text" ng-model="Student.name"><br>
+    City:<br>
+    <input type="text" ng-model="Student.city">
+    <br><br>
+    <button ng-click="createStudent()">Save</button>
+  </form>
+  <p>form = {{Student}}</p>
+  <a href="/home"> Back</a>
+
+
+
+</div>
