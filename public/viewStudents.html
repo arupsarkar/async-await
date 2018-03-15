@@ -10,8 +10,9 @@
   </ul>
 
 
-  <form novalidate>
+  <form novalidate method="POST">
     <h2> Create a Student </h2>
+    <p>form = {{Student}}</p>
     Id:<br>
     <input type="text" ng-model="Student.id"><br>
     Name:<br>
@@ -21,7 +22,18 @@
     <br><br>
     <button ng-click="createStudent()">Save</button>
   </form>
-  <p>form = {{Student}}</p>
+
+
+  <form novalidate>
+    <h2> Delete a Student </h2>
+    <p>form = {{Student}}</p>
+    Id:<br>
+    <input type="text" ng-model="Student.id"><br>
+    <button ng-click="deleteStudent()">Delete</button>
+  </form>
+
+
+
   <a href="/home"> Back</a>
 
 

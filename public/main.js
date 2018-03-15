@@ -45,11 +45,21 @@ app.controller('StudentCtrl', function($scope, StudentFactory) {
       promise.then(function(successPayload){
         $scope.students = successPayload.data;
       }, function(errorPayload){
-        console.log('Error-createStudent : ', error);
+        console.log('Error creating student : ', error);
       });
     };
 
 
+    $scope.deleteStudent = function(){
+      var studentData = $scope.Student;
+      console.log('Controller studentData :', JSON.stringify(studentData));
+      promise = StudentFactory.delete(studentData);
+      promise.then(function(successPayload){
+        $scope.students = successPayload.data;
+      }, function(errorPayload){
+        console.log('Error deleting student : ', error);
+      });
+    };
 });
 
 // angular.module('StudentService', [])
@@ -66,11 +76,12 @@ app.factory('StudentFactory', ['$http',function($http) {
         return $http.get('/api/students/' + id);
       },
       create: function(studentData) {
-        console.log('Factory studentData :', JSON.stringify(studentData));
-        return $http.post('/api/students/' + JSON.stringify(studentData));
+        console.log('Factory create studentData :', JSON.stringify(studentData));
+        return $http.post('/api/students/create/' + JSON.stringify(studentData));
       },
-      delete: function(id) {
-        return $http.delete('/api/students/' + id);
+      delete: function(studentId) {
+        console.log('Factory delete studentData :', JSON.stringify(studentId));
+        return $http.delete('/api/students/delete/' + JSON.stringify(studentId));
       }
     }
 }]);

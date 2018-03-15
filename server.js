@@ -36,7 +36,7 @@ app.get('/api/students', asyncMiddleware(async (req, res, next) => {
   res.json(studentData);
 }));
 
-app.post('/api/students/:studentData', asyncMiddleware(async (req, res, next) => {
+app.post('/api/students/create/:studentData', asyncMiddleware(async (req, res, next) => {
   var rawData = req.params.studentData;
   var obj = JSON.parse(rawData);
   console.log('POST : create Students - Start');
@@ -50,6 +50,34 @@ app.post('/api/students/:studentData', asyncMiddleware(async (req, res, next) =>
 }));
 
 
+app.delete('/api/students/delete/:studentId', function(req, res, next){
+  var rawData = req.params.studentId;
+  var obj = JSON.parse(rawData);
+  console.log('DELETE : delete Students - req ', rawData);
+  const studentData = deleteStudent(rawData);
+  res.json(studentData);
+});
+
+var deleteStudent = function(studentId){
+  var rawData = studentId;
+  var obj = JSON.parse(rawData);
+  console.log('deleteStudent ', obj.id);
+
+  var counter = 0;
+  for(x in students){
+    if(students[counter].id){
+      console.log(students[counter].id, students[counter].name);
+      if(obj.id == students[counter].id){
+        delete students[counter];
+        return students;
+      }
+      counter++;
+    }
+
+  }
+}
+
+
 var saveStudent = function(studentData){
   var rawData = studentData;
   var obj = JSON.parse(rawData);
@@ -59,9 +87,9 @@ var saveStudent = function(studentData){
 
 var getStudents = function(){
     students = [
-      {id: 1, name: 'Mark Waugh', city:'New York'},
-      {id: 2, name: 'Steve Jonathan', city:'London'},
-      {id: 3, name: 'John Marcus', city:'Paris'}
+      {id: '1', name: 'Mark Waugh', city:'New York'},
+      {id: '2', name: 'Steve Jonathan', city:'London'},
+      {id: '3', name: 'John Marcus', city:'Paris'}
     ];
     return students;
 }
