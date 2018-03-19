@@ -42,10 +42,12 @@ app.controller('StudentCtrl', function($scope, StudentFactory) {
       var studentData = $scope.Student;
       console.log('Controller studentData :', JSON.stringify(studentData));
       promise = StudentFactory.create(studentData);
-      promise.then(function(successPayload){
-        $scope.students = successPayload.data;
+      promise.then(function(data){
+        console.info('data', JSON.stringify(data));
+        // console.info('saved student : ', JSON.stringify(successPayload.));
+        $scope.students = data;
       }, function(errorPayload){
-        console.log('Error creating student : ', error);
+        console.log('Error creating student : ', errorPayload);
       });
     };
 
@@ -57,7 +59,7 @@ app.controller('StudentCtrl', function($scope, StudentFactory) {
       promise.then(function(successPayload){
         $scope.students = successPayload.data;
       }, function(errorPayload){
-        console.log('Error deleting student : ', error);
+        console.log('Error deleting student : ', errorPayload);
       });
     };
 });
@@ -67,6 +69,11 @@ app.controller('StudentCtrl', function($scope, StudentFactory) {
   // super simple service
   // each function returns a promise object
 app.factory('StudentFactory', ['$http',function($http) {
+
+  var config = {
+    headers : {'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8;'}
+  }
+
     return {
       getAll: function() {
         console.log('StudentFactory - getAll');
@@ -76,8 +83,15 @@ app.factory('StudentFactory', ['$http',function($http) {
         return $http.get('/api/students/' + id);
       },
       create: function(studentData) {
-        console.log('Factory create studentData :', JSON.stringify(studentData));
-        return $http.post('/api/students/create/' + JSON.stringify(studentData));
+        var data = studentData;
+        console.info('Factory create studentData :', data, config);
+        return $http.post('/api/students/create', data)
+                  .then(function(successPayload){
+                    console.log('Factory create student success : ', successPayload.data);
+                    return successPayload.data;
+                  },function(errorPayload){
+                    console.log('Factory create student error : ', errorPayload);
+                  });
       },
       delete: function(studentId) {
         console.log('Factory delete studentData :', JSON.stringify(studentId));

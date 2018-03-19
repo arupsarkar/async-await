@@ -1,10 +1,12 @@
 var express = require('express');
 var app = express();
+var bodyParser= require('body-parser');
 var port = process.env.PORT || 8080;
 
 // Serve static files
 app.use(express.static(__dirname + '/public'));
-
+app.use(bodyParser.json()); // for parsing application/json
+app.use(bodyParser.urlencoded({ extended: true })); // for parsing application/x-www-form-urlencoded
 var students = {};
 
 const asyncMiddleware = fn =>
@@ -36,17 +38,18 @@ app.get('/api/students', asyncMiddleware(async (req, res, next) => {
   res.json(studentData);
 }));
 
-app.post('/api/students/create/:studentData', asyncMiddleware(async (req, res, next) => {
-  var rawData = req.params.studentData;
-  var obj = JSON.parse(rawData);
-  console.log('POST : create Students - Start');
-  console.log('POST : create Students - req ', rawData);
-  console.log('POST : create Students - studentData name ', obj.name);
-  // students.push({id: obj.id, name: obj.name, city: obj.city});
-  const studentData = await saveStudent(rawData);
+app.post('/api/students/create', asyncMiddleware(async (req, res, next) => {
+// app.post('/api/students/create', function(req, res, next) {
+  console.info(' id ', req.body.id);
+  console.info(' name ', req.body.name);
+  console.info(' city ', req.body.city);
+  if(!req.body.id) {
+    console.error('request body not found');
+    return res.sendStatus(400);
+  }
+  const studentData = await saveStudent(req.body.id, req.body.name, req.body.city);
   console.log(JSON.stringify(studentData))
   res.json(studentData);
-  console.log('POST : create Students - End');
 }));
 
 
@@ -78,10 +81,8 @@ var deleteStudent = function(studentId){
 }
 
 
-var saveStudent = function(studentData){
-  var rawData = studentData;
-  var obj = JSON.parse(rawData);
-  students.push({id: obj.id, name: obj.name, city: obj.city});
+var saveStudent = function(studentId, studentName, studentCity){
+  students.push({id: studentId, name: studentName, city: studentCity});
   return students;
 }
 
