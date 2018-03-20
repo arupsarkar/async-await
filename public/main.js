@@ -38,6 +38,17 @@ app.controller('StudentCtrl', function($scope, StudentFactory) {
       $scope.students = successPayload.data;
     });
 
+    $scope.queriedStudent;
+    $scope.getStudent = function(){
+        var studentData = $scope.Student;
+        promise = StudentFactory.get(studentData.id);
+        promise.then(function(data){
+          $scope.queriedStudent = data;
+        }, function(error){
+          console.info('Error - ', JSON.stringify(error));
+        });
+    };
+
     $scope.createStudent = function(){
       var studentData = $scope.Student;
       console.log('Controller studentData :', JSON.stringify(studentData));
@@ -81,7 +92,19 @@ app.factory('StudentFactory', ['$http',function($http) {
         return $http.get('/api/students');
       },
       get: function(id) {
-        return $http.get('/api/students/' + id);
+        console.log('id', id);
+        var config = {
+          params: {
+            'studentId': id
+          }
+        }
+        return $http.get('/api/students/id', config)
+              .then(function(successPayload){
+                console.info('Success - ', successPayload);
+                return successPayload.data;
+              }, function(errorPayload){
+                console.error('Error - ', successPayload);
+              });
       },
       create: function(studentData) {
         var data = studentData;

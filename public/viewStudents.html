@@ -33,7 +33,17 @@
   </form>
 
 
+  <form novalidate>
+    <h2> Get a Student </h2>
+    <p>form = {{Student}}</p>
+    Id:<br>
+    <input type="text" ng-model="Student.id"><br>
+    <button ng-click="getStudent()">Query</button>
+    <li>{{queriedStudent.id}}, {{queriedStudent.name}} , {{queriedStudent.city}}</li>
+  </form>
 
+  </br>
+  </br>
   <a href="/home"> Back</a>
 
 

@@ -32,43 +32,49 @@ app.get('/users/:id', asyncMiddleware(async (req, res, next) => {
 
 
 app.get('/api/students', asyncMiddleware(async (req, res, next) => {
-  console.log('Inside server /api/students');
   const studentData = await getStudents();
-  console.log('Student data : ', JSON.stringify(studentData));
+  res.json(studentData);
+}));
+
+app.get('/api/students/id', asyncMiddleware(async (req, res, next) => {
+  const studentData = await getStudent(req.query.studentId);
   res.json(studentData);
 }));
 
 app.post('/api/students/create', asyncMiddleware(async (req, res, next) => {
-// app.post('/api/students/create', function(req, res, next) {
-  console.info(' id ', req.body.id);
-  console.info(' name ', req.body.name);
-  console.info(' city ', req.body.city);
   if(!req.body.id) {
     console.error('request body not found');
     return res.sendStatus(400);
   }
   const studentData = await saveStudent(req.body.id, req.body.name, req.body.city);
-  console.log(JSON.stringify(studentData))
   res.json(studentData);
 }));
 
 
 app.delete('/api/students/delete', asyncMiddleware(async (req, res, next) => {
-  console.info('req query studentId ', req.query.studentId);
-  console.log('DELETE : delete Students - req ', req.query.studentId);
   const studentData = await deleteStudent(req.query.studentId);
   res.json(studentData);
 }));
 
-var deleteStudent = function(studentId){
 
-  console.log('deleteStudent ', studentId);
+var getStudent = function(studentId){
+  var counter = 0;
+  for(student in students){
+    if(students[counter].id){
+      if(studentId == students[counter].id){
+        return students[counter];
+      }
+    }
+    counter++;
+  }
+}
+
+var deleteStudent = function(studentId){
   var newStudentList = [];
   var counter = 0;
   var studentCounter = 0;
   for(x in students){
     if(students[counter].id){
-      console.log(students[counter].id, students[counter].name);
       if(studentId == students[counter].id){
         delete students[counter];
       }else{
@@ -77,8 +83,6 @@ var deleteStudent = function(studentId){
       }
     }
     counter++;
-
-
   }
   students.length = 0;
   students.push.apply(students, newStudentList);
