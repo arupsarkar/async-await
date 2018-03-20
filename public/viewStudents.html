@@ -1,50 +1,78 @@
-<div class="container">
-
-  <h2> View Students </h2>
-  Search:
-  <br/>
-    <input type="text" ng-model="name" />
-  <br/>
-  <ul>
-    <li ng-repeat="student in students | filter:name">{{student.name}} , {{student.city}}</li>
-  </ul>
+<div class="container-fluid">
 
 
-  <form novalidate method="POST">
-    <h2> Create a Student </h2>
-    <p>form = {{Student}}</p>
-    Id:<br>
-    <input type="text" ng-model="Student.id"><br>
-    Name:<br>
-    <input type="text" ng-model="Student.name"><br>
-    City:<br>
-    <input type="text" ng-model="Student.city">
-    <br><br>
-    <button ng-click="createStudent()">Save</button>
-  </form>
+			<div class="form-group">
+				<div class="col-sm-offset-2 col-sm-10">
+					<h2> View Students </h2>
+					<label for="search">Search:</label>
+					<br/>
+						<input type="text" class="form-control" class="form-control" ng-model="name" />
+					<br/>
+					<ul>
+						<li ng-repeat="student in students | filter:name">{{student.name}} , {{student.city}}</li>
+					</ul>
+				</div>
+			</div>
 
 
-  <form novalidate>
-    <h2> Delete a Student </h2>
-    <p>form = {{Student}}</p>
-    Id:<br>
-    <input type="text" ng-model="Student.id"><br>
-    <button ng-click="deleteStudent()">Delete</button>
-  </form>
+
+	<div class="form-group">
+		<div class="col-sm-offset-2 col-sm-10">
+				<h2> Create a Student </h2>
+				<p>data = {{Student}}</p>
+
+				<div class="form-group">
+					<label for="id">Id:</label>
+					<input type="text" class="form-control" ng-model="Student.id"><br>
+				</div>
+
+				<div class="form-group">
+					<label for="name">Name:</label>
+					<input type="text" class="form-control" ng-model="Student.name"><br>
+				</div>
+
+				<div class="form-group">
+					<label for="city">City:</label>
+					<input type="text" class="form-control" ng-model="Student.city">
+				</div>
+				<div class="form-group">
+					<br>
+					<button class="btn btn-primary" data-toggle="tooltip" data-placement="top" title="Save a student record." ng-click="createStudent()">Save</button>
+				</div>
+		</div>
+	</div>
 
 
-  <form novalidate>
-    <h2> Get a Student </h2>
-    <p>form = {{Student}}</p>
-    Id:<br>
-    <input type="text" ng-model="Student.id"><br>
-    <button ng-click="getStudent()">Query</button>
-    <li>{{queriedStudent.id}}, {{queriedStudent.name}} , {{queriedStudent.city}}</li>
-  </form>
+		<div class="form-group">
+			<div class="col-sm-offset-2 col-sm-10">
+				<h2> Delete a Student </h2>
+				<p>data = {{Student}}</p>
+				<label for="id">Id:</label>
+				<input type="text" class="form-control" ng-model="Student.id"><br>
+				<br>
+				<button class="btn btn-danger" data-toggle="tooltip" data-placement="top" title="Delete a student record." ng-click="deleteStudent()">Delete</button>
+			</div>
+		</div>
 
-  </br>
-  </br>
-  <a href="/home"> Back</a>
+
+		<div class="form-group">
+			<div class="col-sm-offset-2 col-sm-10">
+				<h2> Get a Student </h2>
+				<p>form = {{Student}}</p>
+				<label for="id">Id:</label>
+				<input type="text" class="form-control" ng-model="Student.id"><br>
+				<br>
+				<button class="btn btn-info" data-toggle="tooltip" data-placement="top" title="Query a student record." ng-click="getStudent()">Query</button><br>
+				<li>{{queriedStudent.id}}, {{queriedStudent.name}} , {{queriedStudent.city}}</li>
+			</div>
+		</div>
+
+
+	<div class="form-group">
+		<div class="col-sm-offset-2 col-sm-10">
+			<a href="/home"> Back</a>
+		</div>
+	</div>
 
 
 
