@@ -1,9 +1,10 @@
 <div class="container-fluid">
 
-
+	<div class="card">
+		<h3 class="card-header bg-success white-text">View Students</h3>
+		<div class="card-body">
 			<div class="form-group">
 				<div class="col-sm-offset-2 col-sm-10">
-					<h2> View Students </h2>
 					<label for="search">Search:</label>
 					<br/>
 					<input type="text" class="form-control" ng-model="name"/>
@@ -13,60 +14,76 @@
 					</ul>
 				</div>
 			</div>
-
-
-
-	<div class="form-group">
-		<div class="col-sm-offset-2 col-sm-10">
-				<h2> Create a Student </h2>
-				<p>data = {{Student}}</p>
-
-				<div class="form-group">
-					<label for="id">Id:</label>
-					<input type="text" class="form-control" ng-model="Student.id"><br>
-				</div>
-
-				<div class="form-group">
-					<label for="name">Name:</label>
-					<input type="text" class="form-control" ng-model="Student.name"><br>
-				</div>
-
-				<div class="form-group">
-					<label for="city">City:</label>
-					<input type="text" class="form-control" ng-model="Student.city">
-				</div>
-				<div class="form-group">
-					<br>
-					<button class="btn btn-primary" data-toggle="tooltip" data-placement="top" title="Save a student record." ng-click="createStudent()"><i class="fa fa-floppy-o" aria-hidden="true"></i> Save</button>
-				</div>
 		</div>
 	</div>
 
 
-		<div class="form-group">
-			<div class="col-sm-offset-2 col-sm-10">
-				<h2> Delete a Student </h2>
-				<p>data = {{Student}}</p>
-				<label for="id">Id:</label>
-				<input type="text" class="form-control" ng-model="Student.id"><br>
-				<br>
 
-					<button class="btn btn-danger" data-toggle="tooltip" data-placement="top" title="Delete a student record." ng-click="deleteStudent()"> <i class="fa fa-trash-o fa-lg"></i> Delete</button>
+
+	<div class="card">
+		<h3 class="card-header bg-primary white-text">Create a Student</h3>
+		<div class="card-body">
+			<div class="form-group">
+				<div class="col-sm-offset-2 col-sm-10">
+						<p>data = {{Student}}</p>
+
+						<div class="form-group">
+							<label for="id">Id:</label>
+							<input type="text" class="form-control" ng-model="Student.id"><br>
+						</div>
+
+						<div class="form-group">
+							<label for="name">Name:</label>
+							<input type="text" class="form-control" ng-model="Student.name"><br>
+						</div>
+
+						<div class="form-group">
+							<label for="city">City:</label>
+							<input type="text" class="form-control" ng-model="Student.city">
+						</div>
+						<div class="form-group">
+							<br>
+							<button class="btn btn-primary" data-toggle="tooltip" data-placement="top" title="Save a student record." ng-click="createStudent()"><i class="fa fa-floppy-o" aria-hidden="true"></i> Save</button>
+						</div>
+				</div>
 			</div>
 		</div>
+	</div>
 
 
-		<div class="form-group">
-			<div class="col-sm-offset-2 col-sm-10">
-				<h2> Get a Student </h2>
-				<p>form = {{Student}}</p>
-				<label for="id">Id:</label>
-				<input type="text" class="form-control" ng-model="Student.id"><br>
-				<br>
-				<button class="btn btn-info" data-toggle="tooltip" data-placement="top" title="Query a student record." ng-click="getStudent()"><i class="fa fa-search" aria-hidden="true"></i> Query</button><br>
-				<li>{{queriedStudent.id}}, {{queriedStudent.name}} , {{queriedStudent.city}}</li>
+
+	<div class="card">
+		<h3 class="card-header bg-danger white-text">Delete a Student</h3>
+		<div class="card-body">
+			<div class="form-group">
+				<div class="col-sm-offset-2 col-sm-10">
+					<p>data = {{Student}}</p>
+					<label for="id">Id:</label>
+					<input type="text" class="form-control" ng-model="Student.id"><br>
+					<br>
+
+						<button class="btn btn-danger" data-toggle="tooltip" data-placement="top" title="Delete a student record." ng-click="deleteStudent()"> <i class="fa fa-trash-o fa-lg"></i> Delete</button>
+				</div>
 			</div>
 		</div>
+	</div>
+
+
+	<div class="card">
+		<h3 class="card-header bg-info white-text">Query a Student</h3>
+		<div class="card-body">
+			<div class="form-group">
+				<div class="col-sm-offset-2 col-sm-10">
+					<p>form = {{Student}}</p>
+					<label for="id">Id:</label>
+					<input type="text" class="form-control" ng-model="Student.id"><br>
+					<br>
+					<button class="btn btn-info" data-toggle="tooltip" data-placement="top" title="Query a student record." ng-click="getStudent()"><i class="fa fa-search" aria-hidden="true"></i> Query</button><br>
+					<li>{{queriedStudent.id}}, {{queriedStudent.name}} , {{queriedStudent.city}}</li>
+				</div>
+			</div>
+		</div>
+	</div>
 
 
 	<div class="form-group">
