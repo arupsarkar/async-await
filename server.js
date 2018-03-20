@@ -53,30 +53,36 @@ app.post('/api/students/create', asyncMiddleware(async (req, res, next) => {
 }));
 
 
-//app.delete('/api/students/delete/:studentId', function(req, res, next){
-app.delete('/api/students/delete', function(req, res, next){
-  console.info('req', req.query.studentId);
+app.delete('/api/students/delete', asyncMiddleware(async (req, res, next) => {
+  console.info('req query studentId ', req.query.studentId);
   console.log('DELETE : delete Students - req ', req.query.studentId);
-  const studentData = deleteStudent(req.query.studentId);
+  const studentData = await deleteStudent(req.query.studentId);
   res.json(studentData);
-});
+}));
 
 var deleteStudent = function(studentId){
 
   console.log('deleteStudent ', studentId);
-
+  var newStudentList = [];
   var counter = 0;
+  var studentCounter = 0;
   for(x in students){
     if(students[counter].id){
       console.log(students[counter].id, students[counter].name);
       if(studentId == students[counter].id){
         delete students[counter];
-        return students;
+      }else{
+        studentCounter++;
+        newStudentList.push({id: studentCounter, name: students[counter].name, city: students[counter].city});
       }
-      counter++;
     }
+    counter++;
+
 
   }
+  students.length = 0;
+  students.push.apply(students, newStudentList);
+  return newStudentList;
 }
 
 
