@@ -6,7 +6,7 @@
 					<h2> View Students </h2>
 					<label for="search">Search:</label>
 					<br/>
-						<input type="text" class="form-control" class="form-control" ng-model="name" />
+					<input type="text" class="form-control" ng-model="name"/>
 					<br/>
 					<ul>
 						<li ng-repeat="student in students | filter:name">{{student.name}} , {{student.city}}</li>
@@ -37,7 +37,7 @@
 				</div>
 				<div class="form-group">
 					<br>
-					<button class="btn btn-primary" data-toggle="tooltip" data-placement="top" title="Save a student record." ng-click="createStudent()">Save</button>
+					<button class="btn btn-primary" data-toggle="tooltip" data-placement="top" title="Save a student record." ng-click="createStudent()"><i class="fa fa-floppy-o" aria-hidden="true"></i> Save</button>
 				</div>
 		</div>
 	</div>
@@ -50,7 +50,8 @@
 				<label for="id">Id:</label>
 				<input type="text" class="form-control" ng-model="Student.id"><br>
 				<br>
-				<button class="btn btn-danger" data-toggle="tooltip" data-placement="top" title="Delete a student record." ng-click="deleteStudent()">Delete</button>
+
+					<button class="btn btn-danger" data-toggle="tooltip" data-placement="top" title="Delete a student record." ng-click="deleteStudent()"> <i class="fa fa-trash-o fa-lg"></i> Delete</button>
 			</div>
 		</div>
 
@@ -62,7 +63,7 @@
 				<label for="id">Id:</label>
 				<input type="text" class="form-control" ng-model="Student.id"><br>
 				<br>
-				<button class="btn btn-info" data-toggle="tooltip" data-placement="top" title="Query a student record." ng-click="getStudent()">Query</button><br>
+				<button class="btn btn-info" data-toggle="tooltip" data-placement="top" title="Query a student record." ng-click="getStudent()"><i class="fa fa-search" aria-hidden="true"></i> Query</button><br>
 				<li>{{queriedStudent.id}}, {{queriedStudent.name}} , {{queriedStudent.city}}</li>
 			</div>
 		</div>
