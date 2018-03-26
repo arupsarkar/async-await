@@ -2,7 +2,7 @@ var express = require('express');
 var app = express();
 var bodyParser= require('body-parser');
 var port = process.env.PORT || 8080;
-
+var jsforce = require('jsforce');
 
 var allowCrossDomain = function(req, res, next) {
     res.header('Access-Control-Allow-Origin', '*');
@@ -17,6 +17,9 @@ var allowCrossDomain = function(req, res, next) {
       next();
     }
 };
+
+
+
 
 // Serve static files
 app.use(allowCrossDomain);
@@ -33,6 +36,37 @@ const asyncMiddleware = fn =>
 
 app.get('/', asyncMiddleware(async (req, res, next) => {
   res.send('Hello World!')
+}));
+
+//
+// OAuth2 client information can be shared with multiple connections.
+//
+var oauth2 = new jsforce.OAuth2({
+  // you can change loginUrl to connect to sandbox or prerelease env.
+  loginUrl : 'https://login.salesforce.com',
+  clientId : '3MVG9A2kN3Bn17huTvg2gF_6Kh1ATXcOoETtZlqlblwhrO4SEKFjtsUbZXvSydokyfqjlkcFI95bKXoa0n54U',
+  clientSecret : '4992527745018937403',
+  redirectUri : 'https://async-await.herokuapp.com/oauth2/callback'
+});
+
+//salesforce OAuth2.0 connection
+app.get('/salesforce/oauth2/auth', asyncMiddleware(async (req, res, next) => {
+  console.log(' salesforce response :', res);
+  res.redirect(oauth2.getAuthorizationUrl({ scope : 'api id web' }));
+}))
+
+app.get('/salesforce/oauth2/callback', asyncMiddleware(async (req, res, next) => {
+  console.log(' salesforce response callback :', res);
+  var conn = new jsforce.Connection({ oauth2 : oauth2 });
+  var code = req.param('code');
+  conn.authorize(code, function(err, userInfo){
+    console.log(conn.accessToken);
+    console.log(conn.refreshToken);
+    console.log(conn.instanceUrl);
+    console.log("User ID: " + userInfo.id);
+    console.log("Org ID: " + userInfo.organizationId);
+    res.send('success');
+  });
 }));
 
 

@@ -10,6 +10,14 @@ app.config(function($routeProvider, $locationProvider) {
       templateUrl: 'viewStudents.html',
       controller: 'StudentCtrl'
     })
+    .when('/auth',{
+      templateUrl: 'auth.html',
+      controller: 'AuthCtrl'
+    })
+    .when('/auth-callback',{
+      templateUrl: 'auth-callback.html',
+      controller: 'AuthCallbackCtrl'
+    })
     .otherwise({
       redirectTo: '/home'
     });
@@ -24,12 +32,8 @@ app.config(function($routeProvider, $locationProvider) {
 
 // angular.module('StudentController', [])
 
-app.controller('StudentCtrl', function($scope, StudentFactory) {
-    // $scope.students = [
-    //   {name: 'Mark Waugh', city:'New York'},
-    //   {name: 'Steve Jonathan', city:'London'},
-    //   {name: 'John Marcus', city:'Paris'}
-    // ];
+app.controller('StudentCtrl', function($scope, StudentFactory, $location) {
+
     $scope.message = "Click on the hyper link to view the students list.";
     var promise;
     promise = StudentFactory.getAll();
@@ -74,9 +78,40 @@ app.controller('StudentCtrl', function($scope, StudentFactory) {
         console.log('Error deleting student : ', errorPayload);
       });
     };
+
+    $scope.loginToSalesforce = function(){
+      $location.path('/auth');
+      $location.replace();
+    };
 });
 
-// angular.module('StudentService', [])
+// salesforce authetication OAuth2.0 flow
+app.controller('AuthCtrl', function($scope, SalesforceConnectionFactory) {
+  var promise = SalesforceConnectionFactory.salesforceAuth();
+  promise.then(function(successPayload){
+    console.log('ctrl success', successPayload.data);
+  }, function(errorPayload){
+    console.log('ctrl error', errorPayload.data);
+  })
+});
+
+app.controller('AuthCallbackCtrl', function($scope, SalesforceConnectionFactory) {
+});
+
+
+app.factory('SalesforceConnectionFactory', ['$http', function($http){
+
+  return {
+    salesforceAuth: function(){
+      return $http.get('/salesforce/oauth2/auth')
+      .then(function(successPayload){
+        console.log('factory success', successPayload.data);
+      },function(errorPayload){
+        console.log('fatory error', errorPayload.data);
+      });
+    }
+  }
+}]);
 
   // super simple service
   // each function returns a promise object
@@ -137,21 +172,3 @@ app.factory('StudentFactory', ['$http',function($http) {
     }
 }]);
 
-
-// angular.module('todoService', [])
-
-//   // super simple service
-//   // each function returns a promise object
-//   .factory('Todos', ['$http',function($http) {
-//     return {
-//       get : function() {
-//         return $http.get('/api/todos');
-//       },
-//       create : function(todoData) {
-//         return $http.post('/api/todos', todoData);
-//       },
-//       delete : function(id) {
-//         return $http.delete('/api/todos/' + id);
-//       }
-//     }
-//   }]);
