@@ -86,7 +86,7 @@ app.controller('StudentCtrl', function($scope, StudentFactory, $location) {
 });
 
 // salesforce authetication OAuth2.0 flow
-app.controller('AuthCtrl', function($$scope, $location, $cookies, $http, SalesforceConnectionFactory) {
+app.controller('AuthCtrl', function($scope, $location, $cookies, $http, SalesforceConnectionFactory) {
     // Delete the local storage data
     $cookies.put("SF_ACCESS_TOKEN", '');
     $cookies.put("SF_INSTANCE_URL", '');
