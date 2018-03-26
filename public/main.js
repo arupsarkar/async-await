@@ -10,11 +10,11 @@ app.config(function($routeProvider, $locationProvider) {
       templateUrl: 'viewStudents.html',
       controller: 'StudentCtrl'
     })
-    .when('/auth',{
+    .when('/auth', {
       templateUrl: 'auth.html',
       controller: 'AuthCtrl'
     })
-    .when('/auth-callback',{
+    .when('/auth-callback', {
       templateUrl: 'auth-callback.html',
       controller: 'AuthCallbackCtrl'
     })
