@@ -14,7 +14,7 @@ app.config(function($routeProvider, $locationProvider) {
       templateUrl: 'auth.html',
       controller: 'AuthCtrl'
     })
-    .when('/auth-callback', {
+    .when('/auth/callback', {
       templateUrl: 'auth-callback.html',
       controller: 'AuthCallbackCtrl'
     })
