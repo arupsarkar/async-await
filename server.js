@@ -89,6 +89,13 @@ var deleteStudent = function(studentId){
   return newStudentList;
 }
 
+app.get('/api/sicom/store', asyncMiddleware(async (req, res, next) => {
+  const storeData = await getStoreCode(req.query.storeId);
+  res.json(storeData);
+}));
+var getStoreCode = function(storeId){
+  return Math.floor(100000000 + Math.random() * 900000000);
+}
 
 var saveStudent = function(studentId, studentName, studentCity){
   students.push({id: studentId, name: studentName, city: studentCity});
