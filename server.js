@@ -46,16 +46,16 @@ var oauth2 = new jsforce.OAuth2({
   loginUrl : 'https://login.salesforce.com',
   clientId : '3MVG9A2kN3Bn17huTvg2gF_6Kh1ATXcOoETtZlqlblwhrO4SEKFjtsUbZXvSydokyfqjlkcFI95bKXoa0n54U',
   clientSecret : '4992527745018937403',
-  redirectUri : 'https://async-await.herokuapp.com/oauth2/callback'
+  redirectUri : 'https://async-await.herokuapp.com/callback'
 });
 
 //salesforce OAuth2.0 connection
-app.get('/salesforce/oauth2/auth', asyncMiddleware(async (req, res, next) => {
+app.get('/auth', asyncMiddleware(async (req, res, next) => {
   console.log(' salesforce response :', res);
   res.redirect(oauth2.getAuthorizationUrl({ scope : 'api id web' }));
 }))
 
-app.get('/salesforce/oauth2/callback', asyncMiddleware(async (req, res, next) => {
+app.get('/callback', asyncMiddleware(async (req, res, next) => {
   console.log(' salesforce response callback :', res);
   var conn = new jsforce.Connection({ oauth2 : oauth2 });
   var code = req.param('code');
