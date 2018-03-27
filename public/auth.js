@@ -56,7 +56,7 @@ app.factory('SalesforceConnectionFactory', ['$http',function($http) {
     return {
       connect: function() {
         console.log('StudentFactory - getAll');
-        return $http.get('/auth', config)
+        return $http.get('/oauth2/auth', config)
         .then(function(successPayload){
           console.log(successPayload.data);
         }, function(errorPayload){
