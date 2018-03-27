@@ -47,9 +47,9 @@ app.factory('SalesforceConnectionFactory', ['$http',function($http) {
   var config = {
     headers : {
                 'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8;',
-                'Access-Control-Allow-Origin', '*',
-                'Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS',
-                'Access-Control-Allow-Headers', 'Content-Type, Authorization, Content-Length, X-Requested-With'
+                'Access-Control-Allow-Origin': '*',
+                'Access-Control-Allow-Methods': 'GET,PUT,POST,DELETE,OPTIONS',
+                'Access-Control-Allow-Headers': 'Content-Type, Authorization, Content-Length, X-Requested-With'
               }
   }
 
