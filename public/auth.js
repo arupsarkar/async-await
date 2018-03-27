@@ -45,13 +45,18 @@ app.factory('SalesforceConnectionFactory', ['$http',function($http) {
 
 
   var config = {
-    headers : {'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8;'}
+    headers : {
+                'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8;',
+                'Access-Control-Allow-Origin', '*',
+                'Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS',
+                'Access-Control-Allow-Headers', 'Content-Type, Authorization, Content-Length, X-Requested-With'
+              }
   }
 
     return {
       connect: function() {
         console.log('StudentFactory - getAll');
-        return $http.get('/auth')
+        return $http.get('/auth', config)
         .then(function(successPayload){
           console.log(successPayload.data);
         }, function(errorPayload){
