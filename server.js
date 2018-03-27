@@ -6,30 +6,26 @@ var jsforce = require('jsforce');
 var cors = require('cors');
 
 var allowCrossDomain = function(req, res, next) {
-    // res.header('Access-Control-Allow-Origin', '*');
-    // res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS');
-    // res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization, Content-Length, X-Requested-With');
-
-    // // intercept OPTIONS method
-    // if ('OPTIONS' == req.method) {
-    //   res.send(200);
-    // }
-    // else {
-    //   next();
-    // }
-
     res.header('Access-Control-Allow-Origin', '*');
     res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS');
     res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization, Content-Length, X-Requested-With');
-    next();
+
+    // intercept OPTIONS method
+    if ('OPTIONS' == req.method) {
+      res.send(200);
+    }
+    else {
+      next();
+    }
+
 };
 
 
 
-
+// cors({credentials: true, origin: true});
 // Serve static files
-app.use(cors());
-//app.use(allowCrossDomain);
+// app.use(cors());
+// app.use(allowCrossDomain);
 app.use(express.static(__dirname + '/public'));
 app.use(bodyParser.json()); // for parsing application/json
 app.use(bodyParser.urlencoded({ extended: true })); // for parsing application/x-www-form-urlencoded
@@ -57,23 +53,19 @@ var oauth2 = new jsforce.OAuth2({
 });
 
 //salesforce OAuth2.0 connection
-app.get('/oauth2/auth', asyncMiddleware(async (req, res, next) => {
-  console.log(' salesforce response :', res);
-  res.redirect(oauth2.getAuthorizationUrl({ scope : 'api id web' }));
-}))
-
-app.get('/oauth2/callback', asyncMiddleware(async (req, res, next) => {
+app.get('/callback', asyncMiddleware(async (req, res, next) => {
   console.log(' salesforce response callback :', res);
-  var conn = new jsforce.Connection({ oauth2 : oauth2 });
-  var code = req.param('code');
-  conn.authorize(code, function(err, userInfo){
-    console.log(conn.accessToken);
-    console.log(conn.refreshToken);
-    console.log(conn.instanceUrl);
-    console.log("User ID: " + userInfo.id);
-    console.log("Org ID: " + userInfo.organizationId);
-    res.send('success');
-  });
+  res.send('success');
+  // var conn = new jsforce.Connection({ oauth2 : oauth2 });
+  // var code = req.param('code');
+  // conn.authorize(code, function(err, userInfo){
+  //   console.log(conn.accessToken);
+  //   console.log(conn.refreshToken);
+  //   console.log(conn.instanceUrl);
+  //   console.log("User ID: " + userInfo.id);
+  //   console.log("Org ID: " + userInfo.organizationId);
+  //   res.send('success');
+  // });
 }));
 
 
