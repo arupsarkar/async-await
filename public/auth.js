@@ -8,7 +8,7 @@ app.controller('AuthCtrl', function ($scope, $location, $cookies, $http) {
     $cookies.put("SF_INSTANCE_URL", '');
     // Redirect to the page
     var url = 'https://login.salesforce.com/services/oauth2/authorize?response_type=token&client_id={client_id}&redirect_uri={redirect_uri}';
-    var redirectUri = '{protocol}://{host}{port}/auth/callback'.supplant({
+    var redirectUri = '{protocol}://{host}{port}/callback'.supplant({
         protocol: $location.protocol(),
         host: $location.host(),
         port: $location.port() ? ':' + $location.port() : ''
