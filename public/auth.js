@@ -1,8 +1,8 @@
-var app = angular.module("myApp", ['ngRoute']);
-
+var app = angular.module("myApp.auth", ['ngCookies']);
 
 // salesforce authetication OAuth2.0 flow
-app.controller('AuthCtrl', function($scope, $location, $cookies, $http, SalesforceConnectionFactory) {
+app.controller('AuthCtrl', function ($scope, $location, $cookies, $http) {
+  console.log('AuthCtrl');
     // Delete the local storage data
     $cookies.put("SF_ACCESS_TOKEN", '');
     $cookies.put("SF_INSTANCE_URL", '');
@@ -32,16 +32,12 @@ app.controller('AuthCallbackCtrl', function($scope, $location, $cookies) {
 });
 
 
-app.factory('SalesforceConnectionFactory', ['$http', function($http){
-
-  return {
-    salesforceAuth: function(){
-      return $http.get('/salesforce/oauth2/auth')
-      .then(function(successPayload){
-        console.log('factory success', successPayload.data);
-      },function(errorPayload){
-        console.log('fatory error', errorPayload.data);
-      });
+String.prototype.supplant = function (o) {
+  return this.replace(
+    /{([^{}]*)}/g,
+    function (a, b) {
+      var r = o[b];
+      return typeof r === 'string' || typeof r === 'number' ? r : a;
     }
-  }
-}]);
+  );
+};
