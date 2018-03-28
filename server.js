@@ -67,20 +67,20 @@ var data = [
 
 //salesforce OAuth2.0 connection
 app.get('/callback', asyncMiddleware(async (req, res, next) => {
-  // console.log(' salesforce response callback :', res.data);
-  // console.log(' salesforce response callback :', res.query);
-  // console.log(' salesforce response callback :', res.params);
-  // const url =
-  // "https://maps.googleapis.com/maps/api/geocode/json?address=Florence";
-  // request.get(url, (error, response, body) => {
-  //   let json = JSON.parse(body);
-  //   console.log(
-  //     'City: ${json.results[0].formatted_address} - ',
-  //     'Latitude: ${json.results[0].geometry.location.lat} -',
-  //     'Longitude: ${json.results[0].geometry.location.lng}'
-  //     )
-  // });
-  app.route('/home')
+  console.log(' salesforce response callback :', res.body);
+  console.log(' salesforce response callback :', req.query);
+  console.log(' salesforce response callback :', req.params);
+  const url =
+  "https://maps.googleapis.com/maps/api/geocode/json?address=Florence";
+  request.get(url, (error, response, body) => {
+    let json = JSON.parse(body);
+    console.log(
+      'City: ${json.results[0].formatted_address} - ',
+      'Latitude: ${json.results[0].geometry.location.lat} -',
+      'Longitude: ${json.results[0].geometry.location.lng}'
+      )
+  });
+  app.route('https://async-await.herokuapp.com/home')
     .all(function(req, res, next) {
   // runs for all HTTP verbs first
   // think of it as route specific middleware!
@@ -94,7 +94,7 @@ app.get('/callback', asyncMiddleware(async (req, res, next) => {
   // maybe add a new event...
     console.log('app.route post');
   });
-  //res.send('success');
+  res.send('success');
   // var conn = new jsforce.Connection({ oauth2 : oauth2 });
   // var code = req.param('code');
   // conn.authorize(code, function(err, userInfo){
