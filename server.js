@@ -16,7 +16,6 @@ var allowCrossDomain = function(req, res, next) {
     res.header('Access-Control-Allow-Origin', '*');
     res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS');
     res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization, Content-Length, X-Requested-With');
-    res.header('Content-Security-Policy', '[*]');
     // intercept OPTIONS method
     if ('OPTIONS' == req.method) {
       res.send(200);
@@ -71,7 +70,9 @@ app.get('/callback', asyncMiddleware(async (req, res, next) => {
   // io.on('connection', function(socket){
   //   socket.emit('community', {data: 'community payload'});
   // });
-  res.send('https://rc-ca-developer-edition.na54.force.com/s');
+
+  var data = '<p> <a href="https://rc-ca-developer-edition.na54.force.com/s"> Access Community </p>';
+  res.send(data);
   // var conn = new jsforce.Connection({ oauth2 : oauth2 });
   // var code = req.param('code');
   // conn.authorize(code, function(err, userInfo){
