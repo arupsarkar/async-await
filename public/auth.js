@@ -29,6 +29,10 @@ app.controller('AuthCtrl', function ($scope, $location, $cookies, $http, Salesfo
 });
 
 app.controller('AuthCallbackCtrl', function($scope, $location, $cookies, SalesforceConnectionFactory) {
+  var socket = io();
+  socket.on('change', function(obj){
+    console.log(' socket broadcast received :', obj);
+  });
   console.log($location.hash.split('&'));
   var promise = SalesforceConnectionFactory.connect();
   promise.then(function(successPayload){

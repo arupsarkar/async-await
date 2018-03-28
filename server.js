@@ -4,6 +4,8 @@ var bodyParser= require('body-parser');
 var port = process.env.PORT || 8080;
 var jsforce = require('jsforce');
 var cors = require('cors');
+var socketio = require('socket.io');
+var io = socketio.listen(server);
 
 var allowCrossDomain = function(req, res, next) {
     res.header('Access-Control-Allow-Origin', '*');
@@ -20,7 +22,9 @@ var allowCrossDomain = function(req, res, next) {
 
 };
 
-
+io.on('connection', function(socket){
+  console.log('a client connected');
+});
 
 // cors({credentials: true, origin: true});
 // Serve static files
@@ -52,9 +56,26 @@ var oauth2 = new jsforce.OAuth2({
   redirectUri : 'https://async-await.herokuapp.com/oauth2/callback'
 });
 
+var data = [
+    {access_token:'sfdc_token', instance_url:'https://login.salesforce.com'}
+    ];
+
 //salesforce OAuth2.0 connection
 app.get('/callback', asyncMiddleware(async (req, res, next) => {
-  console.log(' salesforce response callback :', res);
+  console.log(' salesforce response callback :', res.data);
+  console.log(' salesforce response callback :', res.query);
+  console.log(' salesforce response callback :', res.params);
+
+  io.sockets.on('connection', function(socket){
+    socket.emit('change', data);
+    socket.on('change', function(obj){
+      console.log(obj);
+      data = obj;
+      socket.broadcast.emit('change', data);
+    });
+  });
+
+
   res.send('success');
   // var conn = new jsforce.Connection({ oauth2 : oauth2 });
   // var code = req.param('code');
