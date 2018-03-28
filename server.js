@@ -68,9 +68,9 @@ var data = [
 
 //salesforce OAuth2.0 connection
 app.get('/callback', asyncMiddleware(async (req, res, next) => {
-  io.on('connection', function(socket){
-    socket.emit('community', {data: 'community payload'});
-  });
+  // io.on('connection', function(socket){
+  //   socket.emit('community', {data: 'community payload'});
+  // });
   var landingUrl = "https://rc-ca-developer-edition.na54.force.com/s";
   window.location.href = landingUrl;
   res.send('success');
