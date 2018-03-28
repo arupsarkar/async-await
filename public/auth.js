@@ -72,6 +72,23 @@ app.controller('AuthCtrl', function ($scope, $location, $cookies, $http, Salesfo
         console.log(errorPayload.data);
     });
 
+          var serverData;
+          var socket = io();
+          socket.on('community', function(data){
+            console.log('data', data);
+            serverData = data;
+            console.log('data received from server.');
+            // $location.path('/home');
+            console.log('navigating to home.');
+            socket.disconnect();
+            console.log('serverData outside', serverData);
+            if(serverData){
+              console.log('serverData inside', serverData);
+              var landingUrl = "https://rc-ca-developer-edition.na54.force.com/s";
+              window.location.href = landingUrl;
+            }
+          });
+
 
 });
 

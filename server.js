@@ -3,14 +3,14 @@ var express = require('express');
 var router = express.Router();
 var request = require('request');
 var app = express();
-var server = http.createServer(app);
+var server = http.Server(app);
 
 var bodyParser= require('body-parser');
 var port = process.env.PORT || 8080;
 var jsforce = require('jsforce');
 var cors = require('cors');
 var socketio = require('socket.io');
-var io = socketio.listen(server);
+var io = require('socket.io')(server);
 
 var allowCrossDomain = function(req, res, next) {
     res.header('Access-Control-Allow-Origin', '*');
@@ -29,7 +29,7 @@ var allowCrossDomain = function(req, res, next) {
 
 io.on('connection', function(socket){
   console.log('a client connected');
-  io.emit('change', 'connection received.');
+  socket.emit('change', {data: 'payload'});
 });
 
 // cors({credentials: true, origin: true});
@@ -68,32 +68,8 @@ var data = [
 
 //salesforce OAuth2.0 connection
 app.get('/callback', asyncMiddleware(async (req, res, next) => {
-  console.log(' salesforce response callback :', res.body);
-  console.log(' salesforce response callback :', req.query);
-  console.log(' salesforce response callback :', req.params);
-  const url =
-  "https://maps.googleapis.com/maps/api/geocode/json?address=Florence";
-  request.get(url, (error, response, body) => {
-    let json = JSON.parse(body);
-    console.log(
-      'City: ${json.results[0].formatted_address} - ',
-      'Latitude: ${json.results[0].geometry.location.lat} -',
-      'Longitude: ${json.results[0].geometry.location.lng}'
-      )
-  });
-  router.route('https://async-await.herokuapp.com/home')
-    .all(function(req, res, next) {
-  // runs for all HTTP verbs first
-  // think of it as route specific middleware!
-    console.log('app.route /home');
-  })
-  .get(function(req, res, next) {
-    console.log('app.route get');
-    //res.json('success');
-  })
-  .post(function(req, res, next) {
-  // maybe add a new event...
-    console.log('app.route post');
+  io.on('connection', function(socket){
+    socket.emit('community', {data: 'community payload'});
   });
   res.send('success');
   // var conn = new jsforce.Connection({ oauth2 : oauth2 });
@@ -129,11 +105,8 @@ app.get('/api/students/id', asyncMiddleware(async (req, res, next) => {
   const studentData = await getStudent(req.query.studentId);
 
   io.on('connection', function(socket){
-    socket.on('change', function(msg){
-      io.emit('change', studentData);
-    });
+    socket.emit('studentdata', {data: 'payload'});
   });
-
   res.json(studentData);
 }));
 

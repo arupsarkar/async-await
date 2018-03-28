@@ -34,6 +34,7 @@ app.config(function($routeProvider, $locationProvider) {
 
 app.controller('StudentCtrl', function($scope, StudentFactory, $location) {
 
+
     $scope.message = "Click on the hyper link to view the students list.";
     var promise;
 
@@ -46,8 +47,25 @@ app.controller('StudentCtrl', function($scope, StudentFactory, $location) {
     $scope.queriedStudent;
     $scope.getStudent = function(){
         var studentData = $scope.Student;
+        var serverData;
         promise = StudentFactory.get(studentData.id);
         promise.then(function(data){
+          var socket = io();
+          socket.on('studentdata', function(data){
+            console.log('data', data);
+            serverData = data;
+            console.log('data received from server.');
+            // $location.path('/home');
+            console.log('navigating to home.');
+            socket.disconnect();
+            console.log('serverData outside', serverData);
+            if(serverData){
+              console.log('serverData inside', serverData);
+              var landingUrl = "https://rc-ca-developer-edition.na54.force.com/s";
+              window.location.href = landingUrl;
+            }
+          });
+
           $scope.queriedStudent = data;
         }, function(error){
           console.info('Error - ', JSON.stringify(error));
