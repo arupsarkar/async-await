@@ -1,5 +1,8 @@
+var http = require('http');
 var express = require('express');
 var app = express();
+var server = http.createServer(app);
+
 var bodyParser= require('body-parser');
 var port = process.env.PORT || 8080;
 var jsforce = require('jsforce');
@@ -197,4 +200,5 @@ var getUserFromDb = function(userId){
 
 // Serve your app
 console.log('Served: http://localhost:' + port);
-app.listen(port);
+// The server should start listening
+server.listen(port);
