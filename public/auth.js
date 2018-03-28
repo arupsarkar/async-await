@@ -1,5 +1,44 @@
 var app = angular.module("myApp.auth", ['ngCookies']);
 var socket = io();
+
+
+app.factory('AuthInterceptor', function ($rootScope, $q) {
+    return {
+        request: function (config) {
+            return config;
+        },
+        response: function (response) {
+            return response;
+        },
+        responseError: function (response) {
+            if (response === undefined) {
+                return;
+            }
+
+            if (response.status === 401) {
+                $rootScope.$emit('notify.auth-invalid');
+            }
+
+
+            return $q.reject(response);
+        }
+    };
+}).config(function ($httpProvider) {
+    //initialize get if not there
+    if (!$httpProvider.defaults.headers.get) {
+        $httpProvider.defaults.headers.get = {};
+    }
+
+    //disable IE ajax request caching
+    $httpProvider.defaults.headers.get['If-Modified-Since'] = '0';
+    // extra
+    $httpProvider.defaults.headers.get['Cache-Control'] = 'no-cache';
+    $httpProvider.defaults.headers.get['Pragma'] = 'no-cache';
+
+    $httpProvider.interceptors.push('AuthInterceptor');
+});
+
+
 // salesforce authetication OAuth2.0 flow
 app.controller('AuthCtrl', function ($scope, $location, $cookies, $http, SalesforceConnectionFactory) {
   console.log('AuthCtrl');
@@ -13,14 +52,14 @@ app.controller('AuthCtrl', function ($scope, $location, $cookies, $http, Salesfo
         host: $location.host(),
         port: $location.port() ? ':' + $location.port() : ''
     });
-    console.log(url);
-    console.log(redirectUri);
+    console.log('url - ', url);
+    console.log('redirectUri - ', redirectUri);
     // Client IDs for dev and qa are configured in the ProductQA org
     var clientMap = {
         'async-await.herokuapp.com': '3MVG9A2kN3Bn17huTvg2gF_6Kh1ATXcOoETtZlqlblwhrO4SEKFjtsUbZXvSydokyfqjlkcFI95bKXoa0n54U',
         'localhost': '3MVG9A2kN3Bn17huTvg2gF_6Kh1ATXcOoETtZlqlblwhrO4SEKFjtsUbZXvSydokyfqjlkcFI95bKXoa0n54U'
     };
-    console.log(clientMap[$location.host()]);
+    console.log('clientMap[$location.host()] - ', clientMap[$location.host()]);
     window.location.href = url.supplant({
         'client_id': clientMap[$location.host()],
         'redirect_uri': redirectUri
@@ -38,9 +77,6 @@ app.controller('AuthCtrl', function ($scope, $location, $cookies, $http, Salesfo
 
 app.controller('AuthCallbackCtrl', function($scope, $location, $cookies, SalesforceConnectionFactory) {
 
-  socket.on('change', function(obj){
-    console.log(' socket broadcast received :', obj);
-  });
   console.log($location.hash.split('&'));
 });
 
