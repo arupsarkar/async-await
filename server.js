@@ -1,5 +1,6 @@
 var http = require('http');
 var express = require('express');
+var router = express.Router();
 var request = require('request');
 var app = express();
 var server = http.createServer(app);
@@ -80,7 +81,7 @@ app.get('/callback', asyncMiddleware(async (req, res, next) => {
       'Longitude: ${json.results[0].geometry.location.lng}'
       )
   });
-  app.route('https://async-await.herokuapp.com/home')
+  router.route('https://async-await.herokuapp.com/home')
     .all(function(req, res, next) {
   // runs for all HTTP verbs first
   // think of it as route specific middleware!
