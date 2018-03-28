@@ -76,8 +76,7 @@ app.controller('AuthCtrl', function ($scope, $location, $cookies, $http, Salesfo
 });
 
 app.controller('AuthCallbackCtrl', function($scope, $location, $cookies, SalesforceConnectionFactory) {
-
-  console.log($location.hash.split('&'));
+  $location.path('/home');
 });
 
 

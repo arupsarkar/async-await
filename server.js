@@ -27,12 +27,13 @@ var allowCrossDomain = function(req, res, next) {
 
 io.on('connection', function(socket){
   console.log('a client connected');
+  io.emit('change', 'connection received.');
 });
 
 // cors({credentials: true, origin: true});
 // Serve static files
 // app.use(cors());
-// app.use(allowCrossDomain);
+app.use(allowCrossDomain);
 app.use(express.static(__dirname + '/public'));
 app.use(bodyParser.json()); // for parsing application/json
 app.use(bodyParser.urlencoded({ extended: true })); // for parsing application/x-www-form-urlencoded
@@ -45,7 +46,7 @@ const asyncMiddleware = fn =>
   };
 
 app.get('/', asyncMiddleware(async (req, res, next) => {
-  res.send('Hello World!')
+  res.send('Hello World!');
 }));
 
 //
@@ -68,17 +69,6 @@ app.get('/callback', asyncMiddleware(async (req, res, next) => {
   console.log(' salesforce response callback :', res.data);
   console.log(' salesforce response callback :', res.query);
   console.log(' salesforce response callback :', res.params);
-
-  io.sockets.on('connection', function(socket){
-    socket.emit('change', data);
-    socket.on('change', function(obj){
-      console.log(obj);
-      data = obj;
-      socket.broadcast.emit('change', data);
-    });
-  });
-
-
   res.send('success');
   // var conn = new jsforce.Connection({ oauth2 : oauth2 });
   // var code = req.param('code');
@@ -111,6 +101,13 @@ app.get('/api/students', asyncMiddleware(async (req, res, next) => {
 
 app.get('/api/students/id', asyncMiddleware(async (req, res, next) => {
   const studentData = await getStudent(req.query.studentId);
+
+  io.on('connection', function(socket){
+    socket.on('change', function(msg){
+      io.emit('change', studentData);
+    });
+  });
+
   res.json(studentData);
 }));
 

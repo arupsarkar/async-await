@@ -1,8 +1,6 @@
 var app = angular.module("myApp", ['ngRoute', 'myApp.auth']);
 
 app.config(function($routeProvider, $locationProvider) {
-
-
   $routeProvider
     .when('/home', {
       templateUrl: 'home.html',
@@ -38,6 +36,7 @@ app.controller('StudentCtrl', function($scope, StudentFactory, $location) {
 
     $scope.message = "Click on the hyper link to view the students list.";
     var promise;
+
     promise = StudentFactory.getAll();
     promise.then(function(successPayload){
       console.log('client data', JSON.stringify(successPayload.data));
