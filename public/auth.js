@@ -1,5 +1,5 @@
 var app = angular.module("myApp.auth", ['ngCookies']);
-
+var socket = io();
 // salesforce authetication OAuth2.0 flow
 app.controller('AuthCtrl', function ($scope, $location, $cookies, $http, SalesforceConnectionFactory) {
   console.log('AuthCtrl');
@@ -25,21 +25,23 @@ app.controller('AuthCtrl', function ($scope, $location, $cookies, $http, Salesfo
         'client_id': clientMap[$location.host()],
         'redirect_uri': redirectUri
     });
+    console.log('returned success.');
+    var promise = SalesforceConnectionFactory.connect();
+    promise.then(function(successPayload){
+      console.log(successPayload.data);
+    }, function(errorPayload){
+        console.log(errorPayload.data);
+    });
+
 
 });
 
 app.controller('AuthCallbackCtrl', function($scope, $location, $cookies, SalesforceConnectionFactory) {
-  var socket = io();
+
   socket.on('change', function(obj){
     console.log(' socket broadcast received :', obj);
   });
   console.log($location.hash.split('&'));
-  var promise = SalesforceConnectionFactory.connect();
-  promise.then(function(successPayload){
-    console.log(successPayload.data);
-  }, function(errorPayload){
-      console.log(errorPayload.data);
-  });
 });
 
 
