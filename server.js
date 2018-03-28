@@ -1,5 +1,6 @@
 var http = require('http');
 var express = require('express');
+var request = require('request');
 var app = express();
 var server = http.createServer(app);
 
@@ -66,10 +67,34 @@ var data = [
 
 //salesforce OAuth2.0 connection
 app.get('/callback', asyncMiddleware(async (req, res, next) => {
-  console.log(' salesforce response callback :', res.data);
-  console.log(' salesforce response callback :', res.query);
-  console.log(' salesforce response callback :', res.params);
-  res.send('success');
+  // console.log(' salesforce response callback :', res.data);
+  // console.log(' salesforce response callback :', res.query);
+  // console.log(' salesforce response callback :', res.params);
+  // const url =
+  // "https://maps.googleapis.com/maps/api/geocode/json?address=Florence";
+  // request.get(url, (error, response, body) => {
+  //   let json = JSON.parse(body);
+  //   console.log(
+  //     'City: ${json.results[0].formatted_address} - ',
+  //     'Latitude: ${json.results[0].geometry.location.lat} -',
+  //     'Longitude: ${json.results[0].geometry.location.lng}'
+  //     )
+  // });
+  app.route('/home')
+    .all(function(req, res, next) {
+  // runs for all HTTP verbs first
+  // think of it as route specific middleware!
+    console.log('app.route /home');
+  })
+  .get(function(req, res, next) {
+    console.log('app.route get');
+    //res.json('success');
+  })
+  .post(function(req, res, next) {
+  // maybe add a new event...
+    console.log('app.route post');
+  });
+  //res.send('success');
   // var conn = new jsforce.Connection({ oauth2 : oauth2 });
   // var code = req.param('code');
   // conn.authorize(code, function(err, userInfo){
