@@ -71,8 +71,9 @@ app.get('/callback', asyncMiddleware(async (req, res, next) => {
   // io.on('connection', function(socket){
   //   socket.emit('community', {data: 'community payload'});
   // });
-  var landingUrl = "https://rc-ca-developer-edition.na54.force.com/s";
-  window.location.href = landingUrl;
+  io.on('community', function(socket){
+    socket.emit('studentdata', {data: 'payload'});
+  });
   res.send('success');
   // var conn = new jsforce.Connection({ oauth2 : oauth2 });
   // var code = req.param('code');
