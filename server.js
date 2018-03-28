@@ -71,9 +71,8 @@ app.get('/callback', asyncMiddleware(async (req, res, next) => {
   // io.on('connection', function(socket){
   //   socket.emit('community', {data: 'community payload'});
   // });
-  io.on('community', function(socket){
-    socket.emit('studentdata', {data: 'payload'});
-  });
+  var landingUrl = "https://async-await.herokuapp.com";
+  window.location.href = landingUrl;
   res.send('success');
   // var conn = new jsforce.Connection({ oauth2 : oauth2 });
   // var code = req.param('code');
